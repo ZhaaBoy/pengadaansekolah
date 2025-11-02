@@ -9,7 +9,7 @@
             <div class="flex justify-between items-center mb-4">
                 <h3 class="font-semibold text-gray-700 text-lg">🧾 Daftar Barang</h3>
                 <a href="{{ route('barang.create') }}"
-                    class="px-3 py-2 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700">
+                    class="px-3 py-2 bg-gradient-to-r from-purple-600 via-violet-500 to-fuchsia-500 text-white rounded-md text-sm hover:shadow-lg transition">
                     + Tambah Barang
                 </a>
             </div>

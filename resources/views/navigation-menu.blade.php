@@ -62,20 +62,23 @@
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button
-                                class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+                                class="flex items-center text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+                                <span class="hidden sm:inline-block text-gray-700 font-semibold mr-3">
+                                    {{ Auth::user()->name }}
+                                </span>
                                 <img class="size-8 rounded-full object-cover"
                                     src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                             </button>
                         </x-slot>
 
                         <x-slot name="content">
-                            <div class="block px-4 py-2 text-xs text-gray-400">
+                            {{-- <div class="block px-4 py-2 text-xs text-gray-400">
                                 Kelola Akun
                             </div>
 
                             <x-dropdown-link href="{{ route('profile.show') }}">
                                 Profil
-                            </x-dropdown-link>
+                            </x-dropdown-link> --}}
 
                             <div class="border-t border-gray-200"></div>
 
@@ -170,9 +173,9 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link href="{{ route('profile.show') }}">
+                {{-- <x-responsive-nav-link href="{{ route('profile.show') }}">
                     Profil
-                </x-responsive-nav-link>
+                </x-responsive-nav-link> --}}
 
                 <form method="POST" action="{{ route('logout') }}" x-data>
                     @csrf

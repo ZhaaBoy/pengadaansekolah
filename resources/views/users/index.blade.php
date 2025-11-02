@@ -21,7 +21,7 @@
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-lg font-semibold text-gray-700">👥 Daftar User</h3>
                 <button @click="open = true" x-data="{ open: false }"
-                    class="px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 transition"
+                    class="px-4 py-2 bg-gradient-to-r from-purple-600 via-violet-500 to-fuchsia-500 text-white rounded-md text-sm hover:shadow-lg transition"
                     @click.prevent="$dispatch('open-modal', { id: 'create-user-modal' })">
                     + Tambah User
                 </button>

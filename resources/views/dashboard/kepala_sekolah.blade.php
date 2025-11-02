@@ -16,8 +16,8 @@
             </div>
 
             <div class="mt-8">
-                <h4 class="font-semibold text-gray-700 mb-2">Pengadaan Terbaru</h4>
-                <x-dashboard-table :data="$pengadaan_terbaru" />
+                <h4 class="font-semibold text-gray-700 mb-2">Laporan Terbaru</h4>
+                <x-dashboard-table :data="$laporan_terbaru" />
             </div>
         </div>
     </div>

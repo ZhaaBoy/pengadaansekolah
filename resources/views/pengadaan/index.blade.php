@@ -10,7 +10,7 @@
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-lg font-semibold text-gray-700">📦 Daftar Pengadaan</h3>
                 <a href="{{ route('pengadaan.create') }}"
-                    class="px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 transition">
+                    class="px-4 py-2 bg-gradient-to-r from-purple-600 via-violet-500 to-fuchsia-500 text-white rounded-md text-sm hover:shadow-lg transition">
                     + Tambah Pengadaan
                 </a>
             </div>
@@ -45,16 +45,39 @@
                                     {{ number_format($p->total_harga, 0, ',', '.') }}</td>
 
                                 {{-- STATUS --}}
+                                {{-- STATUS --}}
                                 <td class="py-3 px-4 text-center">
-                                    @if ($p->pembayaran && $p->pembayaran->is_approved == 'approved')
+                                    @php
+                                        $status = $p->status;
+                                        $isRejected = $p->pembayaran && $p->pembayaran->is_approved === 'rejected';
+                                    @endphp
+
+                                    @if ($isRejected)
+                                        {{-- Jika pembayaran ditolak --}}
                                         <span
-                                            class="px-3 py-1 rounded-full bg-green-100 text-green-800 text-xs font-semibold">Disetujui</span>
-                                    @elseif ($p->pembayaran && $p->pembayaran->is_approved == 'rejected')
+                                            class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">
+                                            Ditolak
+                                        </span>
+                                    @elseif ($status === 'menunggu_pembayaran')
                                         <span
-                                            class="px-3 py-1 rounded-full bg-red-100 text-red-800 text-xs font-semibold">Ditolak</span>
+                                            class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs font-semibold">
+                                            Menunggu Pembayaran
+                                        </span>
+                                    @elseif ($status === 'dikirim')
+                                        <span
+                                            class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">
+                                            Dikirim
+                                        </span>
+                                    @elseif ($status === 'selesai')
+                                        <span
+                                            class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
+                                            Selesai
+                                        </span>
                                     @else
                                         <span
-                                            class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-800 text-xs font-semibold">Menunggu</span>
+                                            class="px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-semibold">
+                                            {{ ucfirst(str_replace('_', ' ', $status ?? 'unknown')) }}
+                                        </span>
                                     @endif
                                 </td>
 

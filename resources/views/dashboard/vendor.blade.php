@@ -10,14 +10,14 @@
             <h3 class="text-lg font-semibold text-gray-700 mb-4">Dashboard</h3>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <x-dashboard-card title="Total Pengadaan" color="blue" :value="$total_pengadaan" />
-                <x-dashboard-card title="Menunggu Pembayaran" color="yellow" :value="$menunggu_pembayaran" />
-                <x-dashboard-card title="Barang Terbayar" color="green" :value="$barang_terbayar" />
+                <x-dashboard-card title="Barang Dibuat" color="indigo" :value="$barang_total" />
+                <x-dashboard-card title="Barang Dichekout Staff" color="yellow" :value="$barang_dichekout" />
+                <x-dashboard-card title="Belum Diapprove" color="red" :value="$barang_belum_approve" />
             </div>
 
             <div class="mt-8">
-                <h4 class="font-semibold text-gray-700 mb-2">Pengadaan Terbaru</h4>
-                <x-dashboard-table :data="$pengadaan_terbaru" />
+                <h4 class="font-semibold text-gray-700 mb-2">Pembayaran Terbaru</h4>
+                <x-dashboard-table :data="$pembayaran_terbaru" />
             </div>
         </div>
     </div>

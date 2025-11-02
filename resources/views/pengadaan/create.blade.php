@@ -62,7 +62,7 @@
 
             <div class="pt-4 flex justify-end">
                 <button type="submit"
-                    class="px-5 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition">
+                    class="px-5 py-2 bg-gradient-to-r from-purple-600 via-violet-500 to-fuchsia-500 text-white rounded-md text-sm hover:shadow-lg transition">
                     Simpan Pengadaan
                 </button>
             </div>
