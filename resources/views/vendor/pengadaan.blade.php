@@ -20,6 +20,7 @@
                         <th class="py-2 px-3">Kode</th>
                         <th class="py-2 px-3 text-left">Nama</th>
                         <th class="py-2 px-3 text-right">Harga</th>
+                        <th class="py-2 px-3 text-left">Nama Bank</th>
                         <th class="py-2 px-3 text-left">Rekening</th>
                         <th class="py-2 px-3 text-left">No. Rek</th>
                         <th class="py-2 px-3 text-center">Aksi</th>
@@ -32,6 +33,7 @@
                             <td class="py-2 px-3 text-center font-semibold">{{ $b->kode_barang }}</td>
                             <td class="py-2 px-3">{{ $b->nama_barang }}</td>
                             <td class="py-2 px-3 text-right">Rp {{ number_format($b->harga, 0, ',', '.') }}</td>
+                            <td class="py-2 px-3">{{ $b->nama_bank }}</td>
                             <td class="py-2 px-3">{{ $b->nama_rekening }}</td>
                             <td class="py-2 px-3">{{ $b->no_rekening }}</td>
                             <td class="py-2 px-3 text-center">

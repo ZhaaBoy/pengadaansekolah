@@ -23,6 +23,7 @@
             <form method="POST" action="{{ route('barang.store') }}" class="space-y-4">
                 @csrf
 
+                {{-- KODE BARANG --}}
                 <div>
                     <label for="kode_barang" class="block text-sm font-semibold text-gray-600 mb-1">
                         Kode Barang
@@ -35,6 +36,7 @@
                     @enderror
                 </div>
 
+                {{-- NAMA BARANG --}}
                 <div>
                     <label for="nama_barang" class="block text-sm font-semibold text-gray-600 mb-1">
                         Nama Barang
@@ -47,6 +49,7 @@
                     @enderror
                 </div>
 
+                {{-- HARGA --}}
                 <div>
                     <label for="harga" class="block text-sm font-semibold text-gray-600 mb-1">
                         Harga Satuan (Rp)
@@ -59,7 +62,22 @@
                     @enderror
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {{-- REKENING --}}
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {{-- Nama Bank --}}
+                    <div>
+                        <label for="nama_bank" class="block text-sm font-semibold text-gray-600 mb-1">
+                            Nama Bank
+                        </label>
+                        <input type="text" name="nama_bank" id="nama_bank"
+                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                            placeholder="Contoh: BCA, Mandiri, BSI" required>
+                        @error('nama_bank')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- Nama Rekening --}}
                     <div>
                         <label for="nama_rekening" class="block text-sm font-semibold text-gray-600 mb-1">
                             Nama Rekening
@@ -72,6 +90,7 @@
                         @enderror
                     </div>
 
+                    {{-- Nomor Rekening --}}
                     <div>
                         <label for="no_rekening" class="block text-sm font-semibold text-gray-600 mb-1">
                             Nomor Rekening
@@ -90,7 +109,8 @@
                         class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
                         Batal
                     </a>
-                    <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+                    <button type="submit"
+                        class="px-4 py-2 bg-gradient-to-r from-purple-600 via-violet-500 to-fuchsia-500 text-white rounded-md text-sm hover:shadow-lg transition">
                         Simpan Barang
                     </button>
                 </div>

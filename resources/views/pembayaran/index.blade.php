@@ -139,6 +139,7 @@
                     <div x-show="selectedId == {{ $bayar->id }}" x-transition>
                         <div class="bg-purple-50 border border-purple-200 rounded-lg p-3 mb-3 text-sm text-gray-700">
                             <p><strong>Nama Rekening:</strong> {{ $detail?->nama_rekening }}</p>
+                            <p><strong>Nama Bank:</strong> {{ $detail?->barang->nama_bank }}</p>
                             <p><strong>No. Rekening:</strong> {{ $detail?->no_rekening }}</p>
                         </div>
 

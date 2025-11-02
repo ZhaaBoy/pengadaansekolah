@@ -22,6 +22,7 @@ class BarangController extends Controller
             'kode_barang' => 'required|unique:barangs',
             'nama_barang' => 'required',
             'harga' => 'required|numeric|min:0',
+            'nama_bank' => 'required',
             'nama_rekening' => 'required',
             'no_rekening' => 'required'
         ]);
@@ -43,6 +44,7 @@ class BarangController extends Controller
             'kode_barang' => 'required|string|max:50|unique:barangs,kode_barang,' . $barang->id,
             'nama_barang' => 'required|string|max:255',
             'harga' => 'required|numeric|min:0',
+            'nama_bank' => 'required|string|max:100',
             'nama_rekening' => 'required|string|max:100',
             'no_rekening' => 'required|string|max:100',
         ]);
@@ -51,6 +53,7 @@ class BarangController extends Controller
             'kode_barang' => strtoupper($r->kode_barang),
             'nama_barang' => $r->nama_barang,
             'harga' => $r->harga,
+            'nama_bank' => $r->nama_bank,
             'nama_rekening' => $r->nama_rekening,
             'no_rekening' => $r->no_rekening,
         ]);

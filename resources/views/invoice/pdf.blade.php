@@ -123,10 +123,18 @@
         </table>
 
         {{-- INFORMASI VENDOR --}}
+        @php
+            $detail = $pengadaan->detail->first();
+            $barang = $detail?->barang;
+        @endphp
+
         <div style="margin-top:20px;">
-            <p><strong>Vendor:</strong> {{ $pengadaan->detail->first()->nama_vendor }}</p>
-            <p><strong>Rekening:</strong> {{ $pengadaan->detail->first()->nama_rekening }}
-                ({{ $pengadaan->detail->first()->no_rekening }})</p>
+            <p><strong>Vendor:</strong> {{ $detail?->nama_vendor ?? ($barang?->vendor?->name ?? '-') }}</p>
+            <p>
+                <strong>Rekening:</strong>
+                {{ $barang?->nama_rekening ?? '-' }}
+                ({{ $barang?->nama_bank ?? '-' }} : {{ $barang?->no_rekening ?? '-' }})
+            </p>
         </div>
 
         <div class="footer">

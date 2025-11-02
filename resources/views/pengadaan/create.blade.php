@@ -8,6 +8,7 @@
             x-data="pengadaanForm()">
             @csrf
 
+            {{-- PILIH BARANG --}}
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Pilih Barang</label>
                 <select name="barang_id" id="barangSelect" class="w-full border-gray-300 rounded-lg p-2 text-sm" required
@@ -15,8 +16,8 @@
                     <option value="" disabled selected>-- pilih barang --</option>
                     @foreach ($barangs as $b)
                         <option value="{{ $b->id }}" data-harga="{{ $b->harga }}"
-                            data-vendor="{{ $b->vendor->name }}" data-namarek="{{ $b->nama_rekening }}"
-                            data-norek="{{ $b->no_rekening }}">
+                            data-vendor="{{ $b->vendor->name }}" data-namabank="{{ $b->nama_bank }}"
+                            data-namarek="{{ $b->nama_rekening }}" data-norek="{{ $b->no_rekening }}">
                             {{ $b->nama_barang }} — Rp {{ number_format($b->harga, 0, ',', '.') }}
                             ({{ $b->vendor->name }})
                         </option>
@@ -24,6 +25,7 @@
                 </select>
             </div>
 
+            {{-- JUMLAH QTY --}}
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Qty</label>
                 <input type="number" name="qty" min="1"
@@ -31,6 +33,7 @@
                     placeholder="Masukkan jumlah..." required>
             </div>
 
+            {{-- DETAIL BARANG --}}
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Harga Satuan</label>
@@ -43,23 +46,36 @@
                         class="w-full border-gray-300 rounded-lg p-2 bg-gray-50 text-sm font-semibold text-green-700"
                         disabled>
                 </div>
-                <div>
+
+                <div class="col-span-2">
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Vendor</label>
                     <input x-model="vendor" id="nama_vendor"
                         class="w-full border-gray-300 rounded-lg p-2 bg-gray-50 text-sm" disabled>
                 </div>
+            </div>
+
+            {{-- REKENING INFO (3 kolom sejajar) --}}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Bank</label>
+                    <input x-model="namaBank" id="nama_bank"
+                        class="w-full border-gray-300 rounded-lg p-2 bg-gray-50 text-sm" disabled>
+                </div>
+
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Rekening</label>
                     <input x-model="namaRekening" id="nama_rekening"
                         class="w-full border-gray-300 rounded-lg p-2 bg-gray-50 text-sm" disabled>
                 </div>
-                <div class="col-span-2">
+
+                <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1">No Rekening</label>
                     <input x-model="noRekening" id="no_rekening"
                         class="w-full border-gray-300 rounded-lg p-2 bg-gray-50 text-sm" disabled>
                 </div>
             </div>
 
+            {{-- SUBMIT --}}
             <div class="pt-4 flex justify-end">
                 <button type="submit"
                     class="px-5 py-2 bg-gradient-to-r from-purple-600 via-violet-500 to-fuchsia-500 text-white rounded-md text-sm hover:shadow-lg transition">
@@ -77,6 +93,7 @@
                 qty: 1,
                 total: 0,
                 vendor: '',
+                namaBank: '',
                 namaRekening: '',
                 noRekening: '',
 
@@ -84,13 +101,16 @@
                     const opt = e.target.selectedOptions[0];
                     this.harga = parseInt(opt.dataset.harga);
                     this.vendor = opt.dataset.vendor;
+                    this.namaBank = opt.dataset.namabank;
                     this.namaRekening = opt.dataset.namarek;
                     this.noRekening = opt.dataset.norek;
                     this.hitungTotal();
                 },
+
                 hitungTotal() {
                     this.total = this.harga * this.qty;
                 },
+
                 get hargaFormatted() {
                     return this.harga > 0 ? this.formatRupiah(this.harga) : '-';
                 },
