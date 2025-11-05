@@ -1,4 +1,5 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }"
+    class="bg-gradient-to-r from-purple-600 via-violet-500 to-fuchsia-500 text-white border-b border-violet-200 shadow-lg">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -19,7 +20,7 @@
                     {{-- === MENU UNTUK STAFF === --}}
                     @if (Auth::user()->role === 'staff')
                         <x-nav-link href="{{ route('pengadaan.index') }}" :active="request()->routeIs('pengadaan.*')">
-                            Pengadaan Barang
+                            Pengadaan Sarana
                         </x-nav-link>
 
                         <x-nav-link href="{{ route('pembayaran.index') }}" :active="request()->routeIs('pembayaran.*')">
@@ -38,7 +39,7 @@
                         </x-nav-link> --}}
 
                         <x-nav-link href="{{ route('vendor.pengadaan.index') }}" :active="request()->routeIs('vendor.pengadaan.*')">
-                            Kelola Barang
+                            Kelola Sarana
                         </x-nav-link>
 
                         {{-- ✅ Tambahan baru --}}
@@ -136,9 +137,9 @@
 
             {{-- === RESPONSIVE: VENDOR === --}}
             @if (Auth::user()->role === 'vendor')
-                <x-responsive-nav-link href="{{ route('barang.index') }}" :active="request()->routeIs('barang.*')">
+                {{-- <x-responsive-nav-link href="{{ route('barang.index') }}" :active="request()->routeIs('barang.*')">
                     Barang Saya
-                </x-responsive-nav-link>
+                </x-responsive-nav-link> --}}
 
                 <x-responsive-nav-link href="{{ route('vendor.pengadaan.index') }}" :active="request()->routeIs('vendor.pengadaan.*')">
                     Pengadaan Vendor
