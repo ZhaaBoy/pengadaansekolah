@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 05, 2025 at 01:53 PM
+-- Generation Time: Dec 14, 2025 at 05:59 PM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.16
 
@@ -70,6 +70,12 @@ CREATE TABLE `cache` (
 --
 
 INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
+('e-procurement-cache-1c7c0465bbfb208b8475275d35a24562', 'i:1;', 1765731370),
+('e-procurement-cache-1c7c0465bbfb208b8475275d35a24562:timer', 'i:1765731370;', 1765731370),
+('e-procurement-cache-84e800ff75ba4c7b6804416d2d8b02ff', 'i:1;', 1765731449),
+('e-procurement-cache-84e800ff75ba4c7b6804416d2d8b02ff:timer', 'i:1765731449;', 1765731449),
+('e-procurement-cache-bfd519124c0387fcf0a1df2d131a44bb', 'i:1;', 1765732520),
+('e-procurement-cache-bfd519124c0387fcf0a1df2d131a44bb:timer', 'i:1765732520;', 1765732520),
 ('laravel-cache-1c7c0465bbfb208b8475275d35a24562', 'i:1;', 1762349033),
 ('laravel-cache-1c7c0465bbfb208b8475275d35a24562:timer', 'i:1762349033;', 1762349033),
 ('laravel-cache-298652bffbded3fbb069f439c9124197', 'i:1;', 1761895988),
@@ -120,17 +126,7 @@ CREATE TABLE `detail_pengadaans` (
 --
 
 INSERT INTO `detail_pengadaans` (`id`, `pengadaan_id`, `barang_id`, `qty`, `harga_satuan`, `subtotal`, `nama_vendor`, `nama_rekening`, `no_rekening`, `created_at`, `updated_at`) VALUES
-(2, 2, 3, 2, 300000.00, 600000.00, 'Vendor A', 'PT Vendor A', '1234567890', '2025-10-30 02:56:43', '2025-10-30 02:56:43'),
-(5, 5, 1, 2, 2500000.00, 5000000.00, 'Vendor A', 'PT Vendor A', '1234567890', '2025-10-30 20:17:56', '2025-10-30 20:17:56'),
-(6, 6, 4, 15, 5000.00, 75000.00, 'Vendor A', 'CV Sejahtera Gagah Perkasa', '7295896353', '2025-10-30 20:58:13', '2025-10-30 20:58:13'),
-(7, 7, 7, 19, 67000.00, 1273000.00, 'Vendor A', 'PT Indog Sejahtera', '723172371237', '2025-10-30 21:24:31', '2025-10-30 21:24:31'),
-(8, 8, 8, 5, 70000.00, 350000.00, 'Vendor 2', 'Banu - BCA', '123219312312', '2025-10-31 00:31:26', '2025-10-31 00:31:26'),
-(9, 9, 1, 1, 2500000.00, 2500000.00, 'Vendor A', 'PT Vendor A', '1234567890', '2025-10-31 03:03:57', '2025-10-31 03:03:57'),
-(10, 10, 2, 1, 650000.00, 650000.00, 'Vendor A', 'PT Vendor A', '1234567890', '2025-10-31 03:07:04', '2025-10-31 03:07:04'),
-(11, 11, 4, 1, 5000.00, 5000.00, 'Vendor A', 'CV Sejahtera Gagah Perkasa', '7295896353', '2025-11-02 03:21:15', '2025-11-02 03:21:15'),
-(12, 12, 9, 1, 10000.00, 10000.00, 'Vendor A', 'Asep', '7298231983', '2025-11-02 07:24:02', '2025-11-02 07:24:02'),
-(13, 13, 9, 10, 10000.00, 100000.00, 'Vendor A', 'Asep', '7298231983', '2025-11-02 07:31:20', '2025-11-02 07:31:20'),
-(14, 14, 4, 15, 5000.00, 75000.00, 'Vendor A', 'CV Sejahtera Gagah Perkasa', '7295896353', '2025-11-05 06:25:45', '2025-11-05 06:25:45');
+(16, 16, 2, 1, 650000.00, 650000.00, 'Vendor A', 'PT Vendor A', '1234567890', '2025-12-14 10:41:40', '2025-12-14 10:41:40');
 
 -- --------------------------------------------------------
 
@@ -214,7 +210,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (12, '2025_10_30_095052_add_invoice_path_to_pembayarans_table', 4),
 (13, '2025_10_31_041032_update_status_enum_in_pembayarans_table', 5),
 (14, '2025_10_31_041200_update_status_enum_in_pengadaans_table', 6),
-(15, '2025_11_02_141323_add_nama_bank_to_barang_table', 7);
+(15, '2025_11_02_141323_add_nama_bank_to_barang_table', 7),
+(16, '2025_12_14_161022_add_approval_columns_to_pengadaans_table', 8);
 
 -- --------------------------------------------------------
 
@@ -251,17 +248,7 @@ CREATE TABLE `pembayarans` (
 --
 
 INSERT INTO `pembayarans` (`id`, `pengadaan_id`, `nominal`, `bukti`, `status`, `is_approved`, `invoice_path`, `created_at`, `updated_at`) VALUES
-(2, 2, 600000.00, 'bukti-transfer/rHcaqjitlfZFvD1Gfnt4XVnwffr1mFSdACj6VTac.png', 'lunas', 'approved', 'invoices/invoice_2.pdf', '2025-10-30 02:57:33', '2025-10-30 19:40:01'),
-(3, 5, 5000000.00, 'bukti-transfer/D6rQuElAPkV6PIeJvSqnfybqLMk2ZtPn9eb4paHB.png', 'lunas', 'approved', 'invoices/invoice_5.pdf', '2025-10-30 20:17:56', '2025-10-30 20:20:41'),
-(4, 6, 75000.00, 'bukti-transfer/vJTef419q68xzfQ2T4tyefKfRu4RmCA2NSa3lDz5.png', 'rejected', 'rejected', NULL, '2025-10-30 20:58:13', '2025-10-30 21:11:11'),
-(5, 7, 1273000.00, 'bukti-transfer/Rpt1eYanb73S2vlq9xYoxnxNVLjwldVE7Dd1OEOG.png', 'lunas', 'approved', 'invoices/invoice_7.pdf', '2025-10-30 21:24:31', '2025-10-30 21:25:08'),
-(6, 8, 350000.00, 'bukti-transfer/9WGfL8pWGBjRpqtN1z4SuzZ5oj8HeV0vq6LgNiLA.png', 'lunas', 'approved', 'invoices/invoice_8.pdf', '2025-10-31 00:31:26', '2025-10-31 00:32:23'),
-(7, 9, 2500000.00, 'bukti-transfer/BU6gIFjZA3Li9FBoQ4rVOD52poXlqpw9EOg5iAUn.png', 'lunas', 'approved', 'invoices/invoice_9.pdf', '2025-10-31 03:03:57', '2025-10-31 03:04:39'),
-(8, 10, 650000.00, 'bukti-transfer/58shBe3XhaOjOTCbzwMKkbAUv6nDMJlOWpaMMoag.png', 'lunas', 'approved', 'invoices/invoice_10.pdf', '2025-10-31 03:07:04', '2025-10-31 03:07:42'),
-(9, 11, 5000.00, 'bukti-transfer/vqiQ9DOIK8OVOUyRC0J2qNjJuMfppY6alwE64GEW.png', 'lunas', 'approved', 'invoices/invoice_11.pdf', '2025-11-02 03:21:15', '2025-11-02 03:26:34'),
-(10, 12, 10000.00, 'bukti-transfer/AGFzuUur5Pq6oFc8JK5liArZuSOD5tV46tKkdqqB.png', 'lunas', 'approved', 'invoices/invoice_12.pdf', '2025-11-02 07:24:02', '2025-11-02 07:28:28'),
-(11, 13, 100000.00, 'bukti-transfer/dp6fLogkRfoISsYk9jEuvJLpnbr3b9ni2TLYzobI.png', 'lunas', 'approved', 'invoices/invoice_13.pdf', '2025-11-02 07:31:21', '2025-11-02 07:31:35'),
-(12, 14, 75000.00, 'bukti-transfer/bZHnPTEFeCm4kSLrnwauTJgTY310cL15feQ2HyhA.png', 'rejected', 'rejected', NULL, '2025-11-05 06:25:45', '2025-11-05 06:28:13');
+(14, 16, 650000.00, 'bukti-transfer/0nPqCvCvd93l1yVSK8dRirwfK6aUMQ3D8LWyefin.png', 'lunas', 'pending', 'invoices/invoice_16.pdf', '2025-12-14 10:48:24', '2025-12-14 10:50:48');
 
 -- --------------------------------------------------------
 
@@ -272,8 +259,10 @@ INSERT INTO `pembayarans` (`id`, `pengadaan_id`, `nominal`, `bukti`, `status`, `
 CREATE TABLE `pengadaans` (
   `id` bigint UNSIGNED NOT NULL,
   `staff_id` bigint UNSIGNED NOT NULL,
+  `approved_by` bigint UNSIGNED DEFAULT NULL,
+  `approved_at` timestamp NULL DEFAULT NULL,
   `total_harga` decimal(15,2) NOT NULL DEFAULT '0.00',
-  `status` enum('menunggu_pembayaran','dibayar','dikirim','selesai','ditolak') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'menunggu_pembayaran',
+  `status` enum('menunggu_approval','menunggu_pembayaran','dibayar','dikirim','selesai','ditolak') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'menunggu_approval',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -282,18 +271,8 @@ CREATE TABLE `pengadaans` (
 -- Dumping data for table `pengadaans`
 --
 
-INSERT INTO `pengadaans` (`id`, `staff_id`, `total_harga`, `status`, `created_at`, `updated_at`) VALUES
-(2, 1, 600000.00, 'selesai', '2025-10-30 02:56:43', '2025-10-30 19:41:04'),
-(5, 1, 5000000.00, 'selesai', '2025-10-30 20:17:56', '2025-10-30 20:21:00'),
-(6, 1, 75000.00, 'dibayar', '2025-10-30 20:58:13', '2025-10-30 21:03:57'),
-(7, 1, 1273000.00, 'selesai', '2025-10-30 21:24:31', '2025-10-30 21:25:42'),
-(8, 1, 350000.00, 'selesai', '2025-10-31 00:31:26', '2025-11-02 03:16:21'),
-(9, 1, 2500000.00, 'selesai', '2025-10-31 03:03:57', '2025-11-02 03:16:19'),
-(10, 1, 650000.00, 'selesai', '2025-10-31 03:07:04', '2025-11-02 03:16:22'),
-(11, 1, 5000.00, 'dikirim', '2025-11-02 03:21:15', '2025-11-02 03:26:30'),
-(12, 1, 10000.00, 'selesai', '2025-11-02 07:24:02', '2025-11-02 07:31:06'),
-(13, 1, 100000.00, 'dikirim', '2025-11-02 07:31:20', '2025-11-02 07:31:34'),
-(14, 1, 75000.00, 'ditolak', '2025-11-05 06:25:45', '2025-11-05 06:28:13');
+INSERT INTO `pengadaans` (`id`, `staff_id`, `approved_by`, `approved_at`, `total_harga`, `status`, `created_at`, `updated_at`) VALUES
+(16, 1, 3, '2025-12-14 10:47:54', 650000.00, 'selesai', '2025-12-14 10:41:40', '2025-12-14 10:54:45');
 
 -- --------------------------------------------------------
 
@@ -334,8 +313,9 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('8jvPn1BPgLBIT5oohaowu5yA7aP7cimBWanhyzyv', 3, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiMzFEYkltVHl6dVY4M0dJNzdOUGFBQlhkaFFyZW9vN3VmaFVabUN4YSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzU6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sYXBvcmFuL2NldGFrIjtzOjU6InJvdXRlIjtzOjEzOiJsYXBvcmFuLmNldGFrIjt9czozOiJ1cmwiO2E6MDp7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjM7fQ==', 1762349426),
-('g9kKDKDOEzC8ciaFSUkwIOEVgL1AbyOPtLfmvDui', 2, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiaURsOWNWdERzVGUza0hwMVVtd25yWVpCMmNZMVUwNHRDUkQ2MmU3ZSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6Mzk6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC92ZW5kb3IvcGVtYmF5YXJhbiI7czo1OiJyb3V0ZSI7czoyMzoidmVuZG9yLnBlbWJheWFyYW4uaW5kZXgiO31zOjM6InVybCI7YTowOnt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9', 1762349322);
+('33JstUybFFtZE0OuMbdHPPJ8uk0zD3RVCnR7GqYZ', 3, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiTUcyTDdUMEJ4bWZzek1GTEh5UlQwNjE1cnNjaUh4YWNEMG1ta2JLVSI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6Mzg6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9rZXBzZWsvcGVuZ2FkYWFuIjtzOjU6InJvdXRlIjtzOjIyOiJrZXBzZWsucGVuZ2FkYWFuLmluZGV4Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czozOiJ1cmwiO2E6MDp7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjM7fQ==', 1765735034),
+('e6Q11Ye4oGlMI3IBKDqjdRwnIRORwnDElWIQPwfA', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiUWVwVzFLdEpIYW91MWFwZExLSHhWM3Y3TFAxczBFU0FPeG9Zcm1wMiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wZW1iYXlhcmFuIjtzOjU6InJvdXRlIjtzOjE2OiJwZW1iYXlhcmFuLmluZGV4Ijt9czozOiJ1cmwiO2E6MDp7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1765735047),
+('mLfiTKiNuJlUOpL0DnZ6PrPQjhX2xF56Hwa7VtPM', 2, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoic2VxOGNzSDd2a2FSRXhpbnFsazZkNkF5ZzZFY2EyWWhtQ2VkcTNFWCI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6Mzk6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC92ZW5kb3IvcGVtYmF5YXJhbiI7czo1OiJyb3V0ZSI7czoyMzoidmVuZG9yLnBlbWJheWFyYW4uaW5kZXgiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjM6InVybCI7YTowOnt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9', 1765734998);
 
 -- --------------------------------------------------------
 
@@ -486,7 +466,7 @@ ALTER TABLE `barangs`
 -- AUTO_INCREMENT for table `detail_pengadaans`
 --
 ALTER TABLE `detail_pengadaans`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -504,19 +484,19 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `pembayarans`
 --
 ALTER TABLE `pembayarans`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `pengadaans`
 --
 ALTER TABLE `pengadaans`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
