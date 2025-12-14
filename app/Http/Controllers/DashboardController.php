@@ -17,6 +17,7 @@ class DashboardController extends Controller
         $data = [
             'total_pengadaan'      => 0,
             'menunggu_pembayaran'  => 0,
+            'menunggu_approval'  => 0,
             'barang_terbayar'      => 0,
             'pengadaan_terbaru'    => collect(),
 
@@ -60,7 +61,7 @@ class DashboardController extends Controller
         // === KEPALA SEKOLAH ===
         if ($user->role === 'kepala_sekolah') {
             $data['total_pengadaan'] = Pengadaan::count();
-            $data['menunggu_pembayaran'] = Pengadaan::where('status', 'menunggu_pembayaran')->count();
+            $data['menunggu_approval'] = Pengadaan::where('status', 'menunggu_approval')->count();
             $data['barang_terbayar'] = Pengadaan::where('status', 'selesai')->count();
 
             $data['laporan_terbaru'] = Pengadaan::with('detail.barang', 'staff', 'pembayaran')

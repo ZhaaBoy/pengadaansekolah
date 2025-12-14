@@ -1,55 +1,45 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Pengadaan Barang
+            Approval Pengadaan
         </h2>
     </x-slot>
 
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white shadow-md rounded-2xl p-6">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-lg font-semibold text-gray-700">📦 Daftar Pengadaan</h3>
-                <a href="{{ route('pengadaan.create') }}"
-                    class="px-4 py-2 bg-gradient-to-r from-purple-600 via-violet-500 to-fuchsia-500 text-white rounded-md text-sm hover:shadow-lg transition">
-                    + Tambah Pengadaan
-                </a>
-            </div>
+            <h3 class="text-lg font-semibold text-gray-700 mb-6">
+                📋 Pengadaan Menunggu Approval
+            </h3>
 
             <div class="overflow-x-auto">
                 <table class="w-full border-collapse text-sm text-gray-700">
                     <thead class="bg-gray-50 border-b border-gray-200 text-xs uppercase tracking-wide text-gray-600">
                         <tr>
-                            <th class="py-3 px-4 text-center">No</th>
-                            <th class="py-3 px-4 text-center">Tanggal Pengadaan</th>
+                            <th class="py-3 px-4 text-left">Tanggal Pengadaan</th>
+                            <th class="py-3 px-4 text-left">Staff</th>
                             <th class="py-3 px-4 text-left">Barang</th>
                             <th class="py-3 px-4 text-left">Vendor</th>
                             <th class="py-3 px-4 text-center">Qty</th>
-                            <th class="py-3 px-4 text-right">Total</th>
                             <th class="py-3 px-4 text-center">Status</th>
-                            <th class="py-3 px-4 text-center">Invoice</th>
+                            <th class="py-3 px-4 text-left">Total</th>
+                            <th class="py-3 px-4 text-center">invoice</th>
                             <th class="py-3 px-4 text-center">Aksi</th>
                         </tr>
                     </thead>
+
                     <tbody class="divide-y divide-gray-100">
-                        @forelse($list as $p)
+                        @forelse ($pengadaan as $p)
                             @php $d = $p->detail->first(); @endphp
                             <tr class="hover:bg-gray-50 transition">
-                                <td class="py-3 px-4 text-center">{{ $loop->iteration }}</td>
-                                <td class="py-3 px-4 text-center">
+                                <td class="py-3 px-4 text-left">
                                     {{ \Carbon\Carbon::parse($d?->created_at)->translatedFormat('l, d F Y') }}
                                 </td>
-                                <td class="py-3 px-4 font-medium text-gray-800">{{ $d?->barang?->nama_barang }}</td>
+                                <td class="py-3 px-4">{{ $p->staff->name }}</td>
+                                <td class="py-3 px-4 font-medium">{{ $d?->barang?->nama_barang }}</td>
                                 <td class="py-3 px-4">{{ $d?->nama_vendor }}</td>
                                 <td class="py-3 px-4 text-center">{{ $d?->qty }}</td>
-                                <td class="py-3 px-4 text-right font-semibold">Rp
-                                    {{ number_format($p->total_harga, 0, ',', '.') }}</td>
-
-                                {{-- STATUS --}}
-                                {{-- STATUS --}}
                                 <td class="py-3 px-4 text-center">
-                                    @php
-                                        $status = $p->status;
-                                    @endphp
+                                    @php $status = $p->status; @endphp
 
                                     @if ($status === 'menunggu_approval')
                                         <span
@@ -89,8 +79,9 @@
                                     @endif
                                 </td>
 
-
-                                {{-- INVOICE --}}
+                                <td class="py-3 px-4 text-left font-semibold">
+                                    Rp {{ number_format($p->total_harga, 0, ',', '.') }}
+                                </td>
                                 <td class="py-3 px-4 text-center">
                                     @if ($p->pembayaran && $p->pembayaran->invoice_path)
                                         <a href="{{ asset('storage/' . $p->pembayaran->invoice_path) }}" target="_blank"
@@ -107,37 +98,42 @@
                                         </a>
                                     @endif --}}
                                 </td>
+                                @if ($status === 'menunggu_approval')
+                                    <td class="py-3 px-4">
+                                        <div class="flex justify-center gap-2">
 
-                                {{-- AKSI --}}
-                                <td class="py-3 px-4">
-                                    <div class="flex justify-center items-center gap-2">
-                                        {{-- Tombol Selesai hanya muncul jika status dikirim --}}
-                                        @if ($p->status == 'dikirim')
-                                            <form action="{{ route('pengadaan.selesai', $p) }}" method="POST">
+
+                                            <form method="POST" action="{{ route('kepsek.pengadaan.approve', $p) }}">
                                                 @csrf
-                                                <button type="submit"
-                                                    class="px-3 py-1 bg-emerald-700 text-white text-xs font-semibold rounded-lg hover:bg-emerald-500">
-                                                    Selesai
+                                                <button
+                                                    class="px-3 py-1 bg-emerald-600 text-white text-xs rounded-lg hover:bg-emerald-500">
+                                                    Setujui
                                                 </button>
                                             </form>
-                                        @else
-                                            <span class="text-gray-400 text-xs">-</span>
-                                        @endif
-                                    </div>
-                                </td>
+                                            <form method="POST" action="{{ route('kepsek.pengadaan.reject', $p) }}">
+                                                @csrf
+                                                <button
+                                                    class="px-3 py-1 bg-red-600 text-white text-xs rounded-lg hover:bg-red-500">
+                                                    Tolak
+                                                </button>
+                                            </form>
+
+                                        </div>
+                                    </td>
+                                @else
+                                    <td class="py-3 px-4 text-center">-</td>
+                                @endif
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="py-6 text-center text-gray-500 italic">
-                                    Tidak ada data pengadaan.
+                                <td colspan="7" class="py-6 text-center text-gray-500 italic">
+                                    Tidak ada pengadaan menunggu approval.
                                 </td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
-
-            <div class="mt-4">{{ $list->links() }}</div>
         </div>
     </div>
 </x-app-layout>

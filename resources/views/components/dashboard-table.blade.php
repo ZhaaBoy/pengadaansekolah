@@ -22,6 +22,7 @@
                     <span
                         class="px-3 py-1 rounded-full text-xs font-semibold
                         @if ($status == 'approved' || $status == 'selesai') bg-green-100 text-green-700
+                        @elseif($status == 'menunggu_approval' || $status == 'pending') bg-orange-100 text-orange-700
                         @elseif($status == 'menunggu_pembayaran' || $status == 'pending') bg-yellow-100 text-yellow-700
                         @elseif($status == 'rejected' || $status == 'ditolak') bg-red-100 text-red-700
                         @else bg-gray-100 text-gray-700 @endif">

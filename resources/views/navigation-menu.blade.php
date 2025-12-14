@@ -50,6 +50,9 @@
 
                     {{-- === MENU UNTUK KEPALA SEKOLAH === --}}
                     @if (Auth::user()->role === 'kepala_sekolah')
+                        <x-nav-link href="{{ route('kepsek.pengadaan.index') }}" :active="request()->routeIs('kepsek.pengadaan.*')">
+                            Pengadaan
+                        </x-nav-link>
                         <x-nav-link href="{{ route('laporan.index') }}" :active="request()->routeIs('laporan.*')">
                             Laporan Pembayaran
                         </x-nav-link>

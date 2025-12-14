@@ -16,17 +16,21 @@ class PembayaranController extends Controller
     }
     public function index()
     {
-        $pembayaran = \App\Models\Pembayaran::with(['pengadaan.detail.barang'])
-            ->whereHas('pengadaan', fn($q) => $q->where('staff_id', auth()->id()))
-            ->orderByDesc('created_at')
+        $pengadaan = Pengadaan::with(['detail.barang', 'pembayaran'])
+            ->where('staff_id', auth()->id())
+            ->whereIn('status', ['menunggu_pembayaran', 'dibayar', 'dikirim', 'selesai'])
+            ->orderByRaw("
+            CASE
+                WHEN status = 'menunggu_pembayaran' THEN 0
+                ELSE 1
+            END
+        ")
+            ->latest()
             ->get();
 
-        // force refresh agar tidak baca cache
-        foreach ($pembayaran as $p) {
-            $p->refresh();
-        }
-
-        return view('pembayaran.index', compact('pembayaran'));
+        return view('pembayaran.index', [
+            'pembayaran' => $pengadaan
+        ]);
     }
 
     public function store(Request $r)
@@ -55,5 +59,28 @@ class PembayaranController extends Controller
         $pengadaan->update(['status' => 'dibayar']);
 
         return back()->with('success', 'Bukti transfer berhasil diupload dan menunggu konfirmasi vendor.');
+    }
+
+    public function uploadBukti(Request $r, Pengadaan $pengadaan)
+    {
+        abort_if($pengadaan->staff_id !== auth()->id(), 403);
+        abort_if($pengadaan->status !== 'menunggu_pembayaran', 403);
+
+        $r->validate([
+            'bukti' => 'required|image|max:2048'
+        ]);
+
+        $path = $r->file('bukti')->store('bukti-transfer', 'public');
+
+        Pembayaran::create([
+            'pengadaan_id' => $pengadaan->id,
+            'nominal' => $pengadaan->total_harga,
+            'bukti' => $path,
+            'status' => 'pending',
+        ]);
+
+        $pengadaan->update(['status' => 'dibayar']);
+
+        return back()->with('success', 'Bukti transfer berhasil diupload.');
     }
 }

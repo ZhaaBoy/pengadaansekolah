@@ -71,13 +71,14 @@
                                     @if ($row->pembayaran && $row->pembayaran->invoice_path)
                                         <a href="{{ asset('storage/' . $row->pembayaran->invoice_path) }}"
                                             target="_blank"
-                                            class="inline-flex items-center gap-1 px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-semibold hover:bg-emerald-200">
-                                            Lihat
+                                            class="inline-flex items-center px-3 py-1 bg-indigo-100 text-indigo-700 rounded-lg text-xs font-semibold hover:bg-indigo-200">
+                                            Lihat Invoice
                                         </a>
                                     @else
                                         <span class="text-gray-400 text-xs italic">-</span>
                                     @endif
                                 </td>
+
                             </tr>
                         @endforeach
                     @empty

@@ -26,38 +26,29 @@ class PengadaanController extends Controller
         ]);
 
         $barang = Barang::findOrFail($r->barang_id);
-        $harga = $barang->harga;
-        $subtotal = $harga * (int)$r->qty;
+        $subtotal = $barang->harga * $r->qty;
 
         $pengadaan = Pengadaan::create([
             'staff_id' => auth()->id(),
             'total_harga' => $subtotal,
-            'status' => 'menunggu_pembayaran'
+            'status' => 'menunggu_approval',
         ]);
 
         DetailPengadaan::create([
             'pengadaan_id' => $pengadaan->id,
             'barang_id' => $barang->id,
             'qty' => $r->qty,
-            'harga_satuan' => $harga,
+            'harga_satuan' => $barang->harga,
             'subtotal' => $subtotal,
             'nama_vendor' => $barang->vendor->name,
             'nama_rekening' => $barang->nama_rekening,
             'no_rekening' => $barang->no_rekening,
         ]);
 
-        // ✅ Tambahkan otomatis entry pembayaran
-        Pembayaran::create([
-            'pengadaan_id' => $pengadaan->id,
-            'nominal' => $subtotal,
-            'status' => 'pending',
-            'is_approved' => 'pending',
-            'bukti' => null
-        ]);
-
-        return redirect()->route('pembayaran.index')
-            ->with('success', 'Pengadaan berhasil dibuat dan otomatis masuk ke daftar pembayaran (status: menunggu).');
+        return redirect()->route('pengadaan.index')
+            ->with('success', 'Pengadaan berhasil diajukan dan menunggu persetujuan Kepala Sekolah.');
     }
+
     public function show(Pengadaan $pengadaan)
     {
         abort_if($pengadaan->staff_id !== auth()->id(), 403);

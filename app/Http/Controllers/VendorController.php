@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use PDF;
+use Storage;
 use App\Models\Barang;
 use Illuminate\Http\Request;
 use App\Models\{Pengadaan, Pembayaran};
@@ -62,65 +63,135 @@ class VendorController extends Controller
     /**
      * Approve pembayaran yang masuk hanya jika pengadaan milik vendor ini
      */
-    public function approve(Pengadaan $pengadaan)
+    // public function approve(Pengadaan $pengadaan)
+    // {
+    //     $vendorId = auth()->id();
+
+    //     // Pastikan pengadaan ini memang berisi barang milik vendor yang login
+    //     if (!$pengadaan->detail()->whereHas('barang', fn($q) => $q->where('user_id', $vendorId))->exists()) {
+    //         abort(403, 'Anda tidak berhak mengakses data ini.');
+    //     }
+
+    //     $payment = $pengadaan->pembayaran;
+
+    //     if ($payment && $payment->is_approved === 'pending') {
+    //         $payment->update([
+    //             'is_approved' => 'approved',
+    //             'status'      => 'lunas',
+    //         ]);
+
+    //         $pengadaan->update(['status' => 'dikirim']);
+
+    //         // Generate invoice PDF
+    //         $pengadaan->load('detail.barang', 'staff', 'pembayaran');
+    //         $pdf = \PDF::loadView('invoice.pdf', compact('pengadaan'));
+    //         $fileName = 'invoice_' . $pengadaan->id . '.pdf';
+    //         $path = 'invoices/' . $fileName;
+    //         \Storage::disk('public')->put($path, $pdf->output());
+
+    //         // Simpan path invoice
+    //         $payment->update(['invoice_path' => $path]);
+    //         $pengadaan->refresh()->load('pembayaran');
+    //     }
+
+    //     return back()->with('success', 'Pembayaran disetujui dan status berubah menjadi "Dikirim".');
+    // }
+
+    public function terima(Pengadaan $pengadaan)
     {
+        abort_if($pengadaan->status !== 'dibayar', 403);
+
+        // Pastikan vendor berhak
         $vendorId = auth()->id();
+        $isRelated = $pengadaan->detail()
+            ->whereHas('barang', fn($q) => $q->where('user_id', $vendorId))
+            ->exists();
 
-        // Pastikan pengadaan ini memang berisi barang milik vendor yang login
-        if (!$pengadaan->detail()->whereHas('barang', fn($q) => $q->where('user_id', $vendorId))->exists()) {
-            abort(403, 'Anda tidak berhak mengakses data ini.');
-        }
+        abort_if(!$isRelated, 403);
 
-        $payment = $pengadaan->pembayaran;
+        // Ambil pembayaran
+        $pembayaran = $pengadaan->pembayaran;
+        abort_if(!$pembayaran, 403);
 
-        if ($payment && $payment->is_approved === 'pending') {
-            $payment->update([
-                'is_approved' => 'approved',
-                'status'      => 'lunas',
-            ]);
+        // 1️⃣ Update status pembayaran
+        $pembayaran->update([
+            'status'      => 'lunas',
+            'is_approved' => 'approved',
+        ]);
 
-            $pengadaan->update(['status' => 'dikirim']);
+        // 2️⃣ Generate Invoice PDF
+        $pengadaan->load('detail.barang', 'staff', 'pembayaran');
 
-            // Generate invoice PDF
-            $pengadaan->load('detail.barang', 'staff', 'pembayaran');
-            $pdf = \PDF::loadView('invoice.pdf', compact('pengadaan'));
-            $fileName = 'invoice_' . $pengadaan->id . '.pdf';
-            $path = 'invoices/' . $fileName;
-            \Storage::disk('public')->put($path, $pdf->output());
+        $pdf = PDF::loadView('invoice.pdf', compact('pengadaan'));
 
-            // Simpan path invoice
-            $payment->update(['invoice_path' => $path]);
-            $pengadaan->refresh()->load('pembayaran');
-        }
+        $fileName = 'invoice_' . $pengadaan->id . '.pdf';
+        $path = 'invoices/' . $fileName;
 
-        return back()->with('success', 'Pembayaran disetujui dan status berubah menjadi "Dikirim".');
+        Storage::disk('public')->put($path, $pdf->output());
+
+        // 3️⃣ Simpan path invoice
+        $pembayaran->update([
+            'invoice_path' => $path
+        ]);
+
+        // 4️⃣ Update status pengadaan
+        $pengadaan->update([
+            'status' => 'dikirim'
+        ]);
+
+        return back()->with('success', 'Pembayaran diterima, invoice berhasil dibuat.');
     }
+
 
     /**
      * Reject pembayaran (juga hanya milik vendor ini)
      */
-    public function reject(Pengadaan $pengadaan)
+    // public function reject(Pengadaan $pengadaan)
+    // {
+    //     $vendorId = auth()->id();
+
+    //     if (!$pengadaan->detail()->whereHas('barang', fn($q) => $q->where('user_id', $vendorId))->exists()) {
+    //         abort(403, 'Anda tidak berhak mengakses data ini.');
+    //     }
+
+    //     $payment = $pengadaan->pembayaran;
+
+    //     if ($payment && $payment->is_approved === 'pending') {
+    //         $payment->update([
+    //             'is_approved' => 'rejected',
+    //             'status'      => 'rejected',
+    //         ]);
+
+    //         $pengadaan->update(['status' => 'ditolak']);
+    //         $pengadaan->refresh()->load('pembayaran');
+    //     }
+
+    //     return back()->with('error', 'Pembayaran ditolak. Status pengadaan & pembayaran berubah menjadi "Ditolak".');
+    // }
+
+    public function tolak(Pengadaan $pengadaan)
     {
+        abort_if($pengadaan->status !== 'dibayar', 403);
+
         $vendorId = auth()->id();
+        $isRelated = $pengadaan->detail()
+            ->whereHas('barang', fn($q) => $q->where('user_id', $vendorId))
+            ->exists();
 
-        if (!$pengadaan->detail()->whereHas('barang', fn($q) => $q->where('user_id', $vendorId))->exists()) {
-            abort(403, 'Anda tidak berhak mengakses data ini.');
-        }
+        abort_if(!$isRelated, 403);
 
-        $payment = $pengadaan->pembayaran;
-
-        if ($payment && $payment->is_approved === 'pending') {
-            $payment->update([
-                'is_approved' => 'rejected',
+        if ($pengadaan->pembayaran) {
+            $pengadaan->pembayaran->update([
                 'status'      => 'rejected',
+                'is_approved' => 'rejected',
             ]);
-
-            $pengadaan->update(['status' => 'ditolak']);
-            $pengadaan->refresh()->load('pembayaran');
         }
 
-        return back()->with('error', 'Pembayaran ditolak. Status pengadaan & pembayaran berubah menjadi "Ditolak".');
+        $pengadaan->update(['status' => 'ditolak']);
+
+        return back()->with('error', 'Pembayaran ditolak vendor.');
     }
+
 
     /**
      * Menampilkan daftar pembayaran (hanya pengadaan vendor ini yang sudah dibayar)

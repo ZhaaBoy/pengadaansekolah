@@ -11,7 +11,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <x-dashboard-card title="Total Pengadaan" color="blue" :value="$total_pengadaan" />
-                <x-dashboard-card title="Menunggu Pembayaran" color="yellow" :value="$menunggu_pembayaran" />
+                <x-dashboard-card title="Menunggu Approval" color="yellow" :value="$menunggu_approval" />
                 <x-dashboard-card title="Barang Terbayar" color="green" :value="$barang_terbayar" />
             </div>
 

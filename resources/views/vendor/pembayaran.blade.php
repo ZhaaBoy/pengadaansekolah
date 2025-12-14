@@ -49,23 +49,29 @@
 
                                 {{-- STATUS --}}
                                 <td class="py-2 px-3 text-center">
-                                    @if ($p->pembayaran && $p->pembayaran->is_approved == 'approved')
+                                    @if ($p->status === 'dibayar')
+                                        <span
+                                            class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-800 text-xs font-semibold">
+                                            Menunggu Respon
+                                        </span>
+                                    @elseif ($p->status === 'dikirim')
                                         <span
                                             class="px-3 py-1 rounded-full bg-green-100 text-green-800 text-xs font-semibold">
-                                            Disetujui
+                                            Diproses
                                         </span>
-                                    @elseif ($p->pembayaran && $p->pembayaran->is_approved == 'rejected')
+                                    @elseif ($p->status === 'ditolak')
                                         <span
                                             class="px-3 py-1 rounded-full bg-red-100 text-red-800 text-xs font-semibold">
                                             Ditolak
                                         </span>
                                     @else
                                         <span
-                                            class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-800 text-xs font-semibold">
-                                            Menunggu
+                                            class="px-3 py-1 rounded-full bg-gray-100 text-gray-800 text-xs font-semibold">
+                                            {{ ucfirst($p->status) }}
                                         </span>
                                     @endif
                                 </td>
+
 
                                 {{-- BUKTI --}}
                                 <td class="py-2 px-3 text-center">
@@ -82,28 +88,25 @@
                                 {{-- AKSI --}}
                                 <td class="py-2 px-3">
                                     <div class="flex justify-center gap-2">
-                                        @if ($p->pembayaran && $p->pembayaran->is_approved == 'pending')
+                                        @if ($p->status === 'dibayar')
                                             <form method="POST" action="{{ route('vendor.pengadaan.approve', $p) }}">
                                                 @csrf
-                                                <button type="submit"
-                                                    class="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs rounded-lg hover:bg-emerald-200">
-                                                    Approve
+                                                <button
+                                                    class="px-3 py-1 bg-emerald-600 text-white text-xs rounded-lg hover:bg-emerald-500">
+                                                    Terima
                                                 </button>
                                             </form>
                                             <form method="POST" action="{{ route('vendor.pengadaan.reject', $p) }}">
                                                 @csrf
-                                                <button type="submit"
-                                                    class="px-3 py-1 bg-red-100 text-red-700 text-xs rounded-lg hover:bg-red-200">
+                                                <button
+                                                    class="px-3 py-1 bg-red-600 text-white text-xs rounded-lg hover:bg-red-500">
                                                     Tolak
                                                 </button>
                                             </form>
-                                        @elseif ($p->pembayaran && $p->pembayaran->is_approved == 'approved')
-                                            <span class="text-emerald-600 font-semibold text-xs">Approved</span>
-                                        @elseif ($p->pembayaran && $p->pembayaran->is_approved == 'rejected')
-                                            <span class="text-red-600 font-semibold text-xs">Ditolak</span>
                                         @else
-                                            <span class="text-gray-400 text-xs">Menunggu</span>
+                                            <span class="text-gray-400 text-xs">-</span>
                                         @endif
+
                                     </div>
                                 </td>
                             </tr>
