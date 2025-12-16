@@ -16,10 +16,12 @@
                     <option value="" disabled selected>-- pilih barang --</option>
                     @foreach ($barangs as $b)
                         <option value="{{ $b->id }}" data-harga="{{ $b->harga }}"
-                            data-vendor="{{ $b->vendor->name }}" data-namabank="{{ $b->nama_bank }}"
-                            data-namarek="{{ $b->nama_rekening }}" data-norek="{{ $b->no_rekening }}">
-                            {{ $b->nama_barang }} — Rp {{ number_format($b->harga, 0, ',', '.') }}
-                            ({{ $b->vendor->name }})
+                            data-stok="{{ $b->stok }}" data-vendor="{{ $b->vendor->name }}"
+                            data-namabank="{{ $b->nama_bank }}" data-namarek="{{ $b->nama_rekening }}"
+                            data-norek="{{ $b->no_rekening }}">
+                            {{ $b->nama_barang }}
+                            — Rp {{ number_format($b->harga, 0, ',', '.') }}
+                            (Stok: {{ $b->stok }})
                         </option>
                     @endforeach
                 </select>
@@ -31,27 +33,38 @@
                 <input type="number" name="qty" min="1"
                     class="w-full border-gray-300 rounded-lg p-2 text-sm" x-model="qty" @input="hitungTotal()"
                     placeholder="Masukkan jumlah..." required>
+
+                <p x-show="qty > stok && stok > 0" x-transition class="mt-1 text-sm text-red-600 font-medium">
+                    Stok tidak mencukupi. Stok tersedia hanya <span class="font-bold" x-text="stok"></span>.
+                </p>
             </div>
 
             {{-- DETAIL BARANG --}}
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Harga Satuan</label>
-                    <input x-model="hargaFormatted" id="harga"
-                        class="w-full border-gray-300 rounded-lg p-2 bg-gray-50 text-sm" disabled>
+                    <input x-model="hargaFormatted"
+                        class="w-full border-gray-300 rounded-lg p-2 bg-gray-50 text-sm text-right" disabled>
                 </div>
+
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Total Harga</label>
-                    <input x-model="totalFormatted" id="total"
-                        class="w-full border-gray-300 rounded-lg p-2 bg-gray-50 text-sm font-semibold text-green-700"
+                    <input x-model="totalFormatted"
+                        class="w-full border-gray-300 rounded-lg p-2 bg-gray-50 text-sm font-semibold text-green-700 text-right"
                         disabled>
                 </div>
 
-                <div class="col-span-2">
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Vendor</label>
-                    <input x-model="vendor" id="nama_vendor"
-                        class="w-full border-gray-300 rounded-lg p-2 bg-gray-50 text-sm" disabled>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Stok Tersedia</label>
+                    <input x-model="stok"
+                        class="w-full border-gray-300 rounded-lg p-2 bg-gray-50 text-sm font-semibold text-blue-700 text-left"
+                        disabled>
                 </div>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Vendor</label>
+                <input x-model="vendor" id="nama_vendor"
+                    class="w-full border-gray-300 rounded-lg p-2 bg-gray-50 text-sm" disabled>
             </div>
 
             {{-- REKENING INFO (3 kolom sejajar) --}}
@@ -77,8 +90,11 @@
 
             {{-- SUBMIT --}}
             <div class="pt-4 flex justify-end">
-                <button type="submit"
-                    class="px-5 py-2 bg-gradient-to-r from-purple-600 via-violet-500 to-fuchsia-500 text-white rounded-md text-sm hover:shadow-lg transition">
+                <button type="submit" :disabled="qty > stok || stok === 0"
+                    :class="(qty > stok || stok === 0) ?
+                    'bg-gray-300 cursor-not-allowed' :
+                    'bg-gradient-to-r from-purple-600 via-violet-500 to-fuchsia-500 hover:shadow-lg'"
+                    class="px-5 py-2 text-white rounded-md text-sm transition">
                     Simpan Pengadaan
                 </button>
             </div>
@@ -92,6 +108,8 @@
                 harga: 0,
                 qty: 1,
                 total: 0,
+                stok: 0,
+
                 vendor: '',
                 namaBank: '',
                 namaRekening: '',
@@ -99,11 +117,16 @@
 
                 setBarang(e) {
                     const opt = e.target.selectedOptions[0];
+
                     this.harga = parseInt(opt.dataset.harga);
+                    this.stok = parseInt(opt.dataset.stok);
+
                     this.vendor = opt.dataset.vendor;
                     this.namaBank = opt.dataset.namabank;
                     this.namaRekening = opt.dataset.namarek;
                     this.noRekening = opt.dataset.norek;
+
+                    this.qty = 1;
                     this.hitungTotal();
                 },
 
@@ -114,9 +137,11 @@
                 get hargaFormatted() {
                     return this.harga > 0 ? this.formatRupiah(this.harga) : '-';
                 },
+
                 get totalFormatted() {
                     return this.total > 0 ? this.formatRupiah(this.total) : '-';
                 },
+
                 formatRupiah(angka) {
                     return 'Rp ' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
                 }

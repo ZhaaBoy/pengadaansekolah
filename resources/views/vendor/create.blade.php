@@ -1,4 +1,4 @@
-<x-app-layout>
+.<x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800">
             Tambah Barang Katalog
@@ -58,6 +58,19 @@
                         class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                         placeholder="Masukkan harga..." required>
                     @error('harga')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- STOK --}}
+                <div>
+                    <label for="stok" class="block text-sm font-semibold text-gray-600 mb-1">
+                        Stok
+                    </label>
+                    <input type="number" name="stok" id="stok" min="0"
+                        class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="Masukkan jumlah stok..." required>
+                    @error('stok')
                         <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>

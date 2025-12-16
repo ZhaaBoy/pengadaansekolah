@@ -66,6 +66,20 @@
                     @enderror
                 </div>
 
+                {{-- STOK --}}
+                <div>
+                    <label for="stok" class="block text-sm font-semibold text-gray-600 mb-1">
+                        Stok
+                    </label>
+                    <input type="number" name="stok" id="stok" min="0"
+                        value="{{ old('stok', $barang->stok) }}"
+                        class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                        required>
+                    @error('stok')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 {{-- INFORMASI REKENING --}}
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {{-- Nama Bank --}}

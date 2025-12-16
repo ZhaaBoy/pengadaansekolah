@@ -15,7 +15,7 @@ class PengadaanController extends Controller
     }
     public function create()
     {
-        $barangs = Barang::with('vendor')->orderBy('nama_barang')->get();
+        $barangs = Barang::with('vendor')->where('stok', '>', 0)->orderBy('nama_barang')->get();
         return view('pengadaan.create', compact('barangs'));
     }
     public function store(Request $r)
@@ -26,6 +26,11 @@ class PengadaanController extends Controller
         ]);
 
         $barang = Barang::findOrFail($r->barang_id);
+
+        if ($barang->stok < $r->qty) {
+            return back()->withErrors(['qty' => 'Stok tidak mencukupi. Stok tersedia: ' . $barang->stok]);
+        }
+
         $subtotal = $barang->harga * $r->qty;
 
         $pengadaan = Pengadaan::create([

@@ -20,6 +20,7 @@
                         <th class="py-2 px-3">Kode</th>
                         <th class="py-2 px-3 text-left">Nama</th>
                         <th class="py-2 px-3 text-right">Harga</th>
+                        <th class="py-2 px-3 text-center">Stok</th>
                         <th class="py-2 px-3 text-left">Nama Bank</th>
                         <th class="py-2 px-3 text-left">Rekening</th>
                         <th class="py-2 px-3 text-left">No. Rek</th>
@@ -33,6 +34,7 @@
                             <td class="py-2 px-3 text-center font-semibold">{{ $b->kode_barang }}</td>
                             <td class="py-2 px-3">{{ $b->nama_barang }}</td>
                             <td class="py-2 px-3 text-right">Rp {{ number_format($b->harga, 0, ',', '.') }}</td>
+                            <td class="py-2 px-3">{{ $b->stok }}</td>
                             <td class="py-2 px-3">{{ $b->nama_bank }}</td>
                             <td class="py-2 px-3">{{ $b->nama_rekening }}</td>
                             <td class="py-2 px-3">{{ $b->no_rekening }}</td>
@@ -45,7 +47,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="py-4 text-center text-gray-500 italic">
+                            <td colspan="7" class="py-4 text-center text-gray-500 italic">
                                 Belum ada data barang.
                             </td>
                         </tr>

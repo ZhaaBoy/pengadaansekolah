@@ -134,7 +134,13 @@ class VendorController extends Controller
             'invoice_path' => $path
         ]);
 
-        // 4️⃣ Update status pengadaan
+        // 4️⃣ Kurangi stok barang sesuai qty yang dipesan
+        foreach ($pengadaan->detail as $detail) {
+            $barang = $detail->barang;
+            $barang->decrement('stok', $detail->qty);
+        }
+
+        // 5️⃣ Update status pengadaan
         $pengadaan->update([
             'status' => 'dikirim'
         ]);
